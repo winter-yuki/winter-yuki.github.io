@@ -9,6 +9,7 @@
 1. Book: 'Kotlin in action' (+ru)
 1. Course for practice: https://stepik.org/course/2852/syllabus?auth=registration
 1. Well-written reference: https://kotlinlang.org/docs/reference/
+1. Deal with errors: https://medium.com/@elizarov/kotlin-and-exceptions-8062f589d07
 
 ### Coroutines
 
