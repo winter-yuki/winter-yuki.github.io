@@ -1,1 +1,39 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSC - WASM cloud computing</title>
+  </head>
+  <body>
+    <div>
+      <label for="workerName">Enter worker name:</label>
+      <input id="workerName" type="text" minlength="1"/>
+      <button id="setWorkerButton">Add this worker</button>
+    </div>
+    <div>
+      <!-- TODO choose wasm -->
+      <!-- <label for="wasm">Choose wasm file to run:</label>
+           <input id="wasm" type="file" accept="text/wasm,application/wasm,.wasm" /> -->
+      <label for="wasm">Enter wasm code to run:</label>
+      <input
+        id="wasm"
+        type="text"
+        value='(module (func (export "main") (result i32) i32.const 42 return))'
+      />
+    </div>
+    <div>
+      <label for="data">Enter data elements separated with commas:</label>
+      <input id="data" type="text" value="1,2,3,4,5" />
+    </div>
+    <div>
+      <button id="runButton">Run</button>
+    </div>
+  </body>
+  <script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
+  <script src="setup.js"></script>
+  <script src="master.js"></script>
+  <script src="worker.js"></script>
+  </script>
+</html>
