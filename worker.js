@@ -37,7 +37,7 @@ let workerPC;
         try {
           await workerPC.addIceCandidate(message.data.newIceCandidate);
         } catch (e) {
-          // console.error("Error adding received ice candidate", e);
+          console.error("Error adding received ice candidate", e);
         }
       }
     });
