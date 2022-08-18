@@ -57,15 +57,27 @@ class Routing {
 
     private fun route(): Route {
         val hash = window.location.hash
+        console.log("route: hash = $hash")
         if (hash.isEmpty()) return Route.Root
         if (!hash.startsWith("#/")) return Route.Unknown
         val accessOrPath = hash.drop(2)
+        if (accessOrPath.isEmpty()) return Route.Root
         if (accessOrPath.startsWith("!")) {
-            access = ContentAccess.ofRepr(accessOrPath.drop(1)) ?: return Route.Unknown
+            val accessRaw = accessOrPath.drop(1)
+            val accessRepr = accessRaw.takeWhile { it != '/' }
+            console.log("route: access = $accessRepr")
+            val tail = accessRaw.dropWhile { it != '/' }
+            if (tail != "/" && tail.isNotEmpty()) return Route.Unknown
+            access = ContentAccess.ofRepr(accessRepr) ?: return Route.Unknown
             return Route.Root
         }
         val id = ContentId.fromPath(accessOrPath)
-        if (id == null || id !in Storage.content) return Route.Unknown
+        console.log("route: id = $id")
+        if (id == null) return Route.Unknown
+        if (id !in Storage.content) {
+            console.log("route: unknown id")
+            return Route.Unknown
+        }
         return Route.Content(id)
     }
 }
