@@ -52,7 +52,9 @@ class Routing {
         }
     }
 
-    private fun ContentId?.toUrl(): String = "#/" + (this?.path ?: "!${access.repr}")
+    private fun ContentId?.toUrl(): String =
+        // Prefix is always needed to not reload page
+        PREFIX + (this?.path ?: if (access.repr.isEmpty()) "" else "!${access.repr}")
 
     private fun ContentId?.toRoute(): Route =
         if (this == null) Route.Root
@@ -62,8 +64,8 @@ class Routing {
         fun <T> T.log(msg: (T) -> String): T = also { console.log("route: ${msg(it)}") }
         val hash = window.location.hash.log { "hash = $it" }
         if (hash.isEmpty()) return Route.Root
-        if (!hash.startsWith("#/")) return Route.Unknown.log { "wrong prefix" }
-        val accessOrPath = hash.drop(2)
+        if (!hash.startsWith(PREFIX)) return Route.Unknown.log { "wrong prefix" }
+        val accessOrPath = hash.drop(PREFIX.length)
         if (accessOrPath.isEmpty()) return Route.Root
         when {
             accessOrPath.startsWith("!") -> {
@@ -85,5 +87,9 @@ class Routing {
                 return Route.Content(afterSubstitution)
             }
         }
+    }
+
+    companion object {
+        private const val PREFIX = "#/"
     }
 }

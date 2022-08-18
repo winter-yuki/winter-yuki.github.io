@@ -93,16 +93,17 @@ fun Main(routing: Routing) {
             when (val route = routing.route) {
                 is Route.Root -> {
                     val items = remember {
-                        Storage.content.filter { it.value <= routing.access }.keys
+                        Storage.content.filter { it.value.access <= routing.access }.keys
                     }
                     Items(items, routing)
                 }
                 is Route.Unknown -> NotFound()
                 is Route.Content -> {
                     val state = loadContent(route.id)
+                    val info = remember { Storage.content.getValue(route.id) }
                     when (val result = state.value) {
                         is LoadResult.Loading -> Loading()
-                        is LoadResult.Success -> ContentView(route.id, result.content)
+                        is LoadResult.Success -> ContentView(info, result.content)
                     }
                 }
             }
@@ -201,18 +202,22 @@ fun NotFound() {
 }
 
 @Composable
-fun ContentView(id: ContentId, content: Content) {
+fun ContentView(info: ContentInfo, content: Content) {
     Article {
         Container {
-            H2(attrs = {
-                style {
-                    paddingTop(1.5.em)
-                    textAlign("center")
-                    fontSize(20.pt)
-                    fontWeight("normal")
+            if (info.hideTitle) {
+                Div(attrs = { style { height(3.em) } }) { }
+            } else {
+                H2(attrs = {
+                    style {
+                        paddingTop(1.5.em)
+                        textAlign("center")
+                        fontSize(20.pt)
+                        fontWeight("normal")
+                    }
+                }) {
+                    Text(info.id.name.v)
                 }
-            }) {
-                Text(id.name.v)
             }
             P {
                 content.v.lines().forEach {
