@@ -37,15 +37,18 @@ class Routing {
     }
 
     fun onNavigate(id: ContentId?) {
-        window.history.pushState(
-            data = Unit,
-            title = if (id == null) Const.TITLE else "${Const.TITLE}: ${id.name}",
-            url = "${window.location.origin}/${id.toUrl()}".also {
-                console.log("onNavigate: url: $it")
-            }
-        )
-        route = id.toRoute().also {
+        val newRoute = id.toRoute().also {
             console.log("onNavigate: route: $it")
+        }
+        if (route != newRoute) {
+            route = newRoute
+            window.history.pushState(
+                data = Unit,
+                title = if (id == null) Const.TITLE else "${Const.TITLE}: ${id.name}",
+                url = "${window.location.origin}/${id.toUrl()}".also {
+                    console.log("onNavigate: url: $it")
+                }
+            )
         }
     }
 
@@ -56,28 +59,31 @@ class Routing {
         else Route.Content(this)
 
     private fun route(): Route {
-        val hash = window.location.hash
-        console.log("route: hash = $hash")
+        fun <T> T.log(msg: (T) -> String): T = also { console.log("route: ${msg(it)}") }
+        val hash = window.location.hash.log { "hash = $it" }
         if (hash.isEmpty()) return Route.Root
-        if (!hash.startsWith("#/")) return Route.Unknown
+        if (!hash.startsWith("#/")) return Route.Unknown.log { "wrong prefix" }
         val accessOrPath = hash.drop(2)
         if (accessOrPath.isEmpty()) return Route.Root
-        if (accessOrPath.startsWith("!")) {
-            val accessRaw = accessOrPath.drop(1)
-            val accessRepr = accessRaw.takeWhile { it != '/' }
-            console.log("route: access = $accessRepr")
-            val tail = accessRaw.dropWhile { it != '/' }
-            if (tail != "/" && tail.isNotEmpty()) return Route.Unknown
-            access = ContentAccess.ofRepr(accessRepr) ?: return Route.Unknown
-            return Route.Root
+        when {
+            accessOrPath.startsWith("!") -> {
+                val accessWithTail = accessOrPath.drop(1) // remove '!'
+                val accessRepr = accessWithTail.takeWhile { it != '/' }.log { "accessRepr = $it" }
+                val tail = accessWithTail.dropWhile { it != '/' }
+                if (tail != "/" && tail.isNotEmpty()) {
+                    return Route.Unknown.log { "non empty tail = $tail" }
+                }
+                access = ContentAccess.ofRepr(accessRepr) ?: return Route.Unknown.log { "wrong repr" }
+                return Route.Root
+            }
+            else -> {
+                val path = accessOrPath
+                val id = ContentId.fromPath(path).log { "id = $it" }
+                if (id != null && id in Storage.content) return Route.Content(id)
+                log { "not found in content" }
+                val afterSubstitution = Storage.substitution[path] ?: return Route.Unknown.log { "no substitution" }
+                return Route.Content(afterSubstitution)
+            }
         }
-        val id = ContentId.fromPath(accessOrPath)
-        console.log("route: id = $id")
-        if (id == null) return Route.Unknown
-        if (id !in Storage.content) {
-            console.log("route: unknown id")
-            return Route.Unknown
-        }
-        return Route.Content(id)
     }
 }

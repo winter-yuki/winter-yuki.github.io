@@ -2,7 +2,7 @@ import kotlinx.browser.window
 import kotlinx.coroutines.CompletableDeferred
 
 enum class ContentAccess(val repr: String) {
-    Common(""), Extended("ext");
+    Common(""), Extended("ext"), LinkAccess("nowaytoaccessthisthing42");
 
     companion object {
         fun ofRepr(repr: String): ContentAccess? = values().find { it.repr == repr }
