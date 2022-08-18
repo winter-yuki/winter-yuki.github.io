@@ -3,6 +3,10 @@ object Storage {
 
     val substitution: Map<String, ContentId> = buildMap {
         data.forEach { info ->
+            info.permanentShortNames.forEach { name ->
+                require(name !in this)
+                put(name, info.id)
+            }
             info.shortNames.forEach { name ->
                 require(name !in this)
                 put(name, info.id)
@@ -14,8 +18,9 @@ object Storage {
 data class ContentInfo(
     val id: ContentId,
     val access: ContentAccess,
+    val permanentShortNames: List<String>,
     val shortNames: List<String>,
-    val hideTitle: Boolean
+    val hideTitle: Boolean,
 )
 
 private class ContentInfoBuilder {
@@ -24,7 +29,8 @@ private class ContentInfoBuilder {
     var name: String? = null
     var date: String? = null
     var format: ContentFormat? = null
-    var shortNames = mutableListOf<String>()
+    val permanentShortNames = mutableListOf<String>() // Do not remove permanent names!
+    val shortNames = mutableListOf<String>()
     var hideTitle: Boolean = false
 
     fun build() = ContentInfo(
@@ -35,6 +41,7 @@ private class ContentInfoBuilder {
             format!!
         ),
         access,
+        permanentShortNames = permanentShortNames,
         shortNames = shortNames,
         hideTitle = hideTitle
     )
@@ -43,6 +50,7 @@ private class ContentInfoBuilder {
 private inline fun contentInfo(block: ContentInfoBuilder.() -> Unit): ContentInfo =
     ContentInfoBuilder().apply(block).build()
 
+// Assign production data instead of test one
 private val data by lazy { testData }
 
 private val testData = listOf(
@@ -67,6 +75,6 @@ private val testData = listOf(
         access = ContentAccess.Extended
         name = "test2"
         format = ContentFormat.TXT
-        shortNames.add("short")
+        permanentShortNames.add("short")
     },
 )
