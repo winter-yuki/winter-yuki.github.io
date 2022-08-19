@@ -1,8 +1,10 @@
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.Style
@@ -24,6 +26,7 @@ import org.jetbrains.compose.web.css.textAlign
 import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
+import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
@@ -32,6 +35,8 @@ import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Section
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
+import org.w3c.dom.HTMLParagraphElement
+import kotlin.random.Random
 
 fun main() {
     renderComposable(rootElementId = "root") {
@@ -205,7 +210,7 @@ fun NotFound() {
 fun ContentView(info: ContentInfo, content: Content) {
     Article {
         Container {
-            if (info.hideTitle) {
+            if (info.hideTitle || info.id.format != ContentFormat.TXT) {
                 Div(attrs = { style { height(3.em) } }) { }
             } else {
                 H2(attrs = {
@@ -219,9 +224,25 @@ fun ContentView(info: ContentInfo, content: Content) {
                     Text(info.id.name.v)
                 }
             }
-            P {
-                content.v.lines().forEach {
-                    Line(it)
+            val elementId = remember { "content${Random.nextInt()}" }
+            val rendered = render(info.id, content)
+            P(attrs = {
+                id(elementId)
+                rendered.run { attrs() }
+            }) {
+                when (rendered) {
+                    is RenderingResult.Plain -> {
+                        content.v.lines().forEach {
+                            Line(it)
+                        }
+                    }
+                    is RenderingResult.Rendered -> {
+                        LaunchedEffect(content) {
+                            val element = window.document.getElementById(elementId)
+                            requireNotNull(element) { "Content element is not rendered" }
+                            element.innerHTML = rendered.html
+                        }
+                    }
                 }
             }
         }
@@ -239,3 +260,24 @@ fun Line(line: String) {
         Text(line)
     }
 }
+
+sealed interface RenderingResult {
+    val attrs: AttrBuilderContext<HTMLParagraphElement>
+
+    data class Plain(override val attrs: AttrBuilderContext<HTMLParagraphElement> = {}) : RenderingResult
+
+    data class Rendered(
+        val html: String,
+        override val attrs: AttrBuilderContext<HTMLParagraphElement>
+    ) : RenderingResult
+}
+
+fun render(id: ContentId, content: Content): RenderingResult =
+    when (id.format) {
+        ContentFormat.TXT -> RenderingResult.Plain()
+        ContentFormat.MD -> {
+            val parse = js("marked.parse") as (String) -> String
+            RenderingResult.Rendered(parse(content.v), attrs = { classes("markdown-body") })
+        }
+        ContentFormat.ADOC -> RenderingResult.Plain()
+    }

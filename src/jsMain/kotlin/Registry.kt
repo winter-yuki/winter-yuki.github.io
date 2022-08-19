@@ -69,7 +69,7 @@ private val testData = listOf(
         access = ContentAccess.Common
         name = "test3"
         date = "15.08.2022"
-        format = ContentFormat.TXT
+        format = ContentFormat.MD
     },
     contentInfo {
         access = ContentAccess.Extended
