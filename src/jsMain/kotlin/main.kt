@@ -164,22 +164,22 @@ fun Foot() {
 }
 
 @Composable
-fun Items(ids: Iterable<ContentId>, routing: Routing) {
-    ids.forEach { id ->
-        key(id) {
-            Item(id, routing)
+fun Items(infos: Iterable<ContentInfo>, routing: Routing) {
+    infos.forEach { info ->
+        key(info) {
+            Item(info, routing)
         }
     }
 }
 
 @Composable
-fun Item(id: ContentId, routing: Routing) {
+fun Item(info: ContentInfo, routing: Routing) {
     Div(attrs = {
         style {
             paddingLeft(40.px)
             paddingTop(20.px)
         }
-        onClick { routing.onNavigate(id) }
+        onClick { routing.onNavigate(info.id) }
     }) {
         A(attrs = {
             style {
@@ -187,7 +187,7 @@ fun Item(id: ContentId, routing: Routing) {
                 fontSize(30.px)
             }
         }) {
-            Text(id.name.toString())
+            Text(info.titleNotNull)
         }
         Div(attrs = {
             style {
@@ -195,7 +195,7 @@ fun Item(id: ContentId, routing: Routing) {
                 fontSize(25.px)
             }
         }) {
-            Text(id.date.toString())
+            Text(info.id.date.toString())
         }
     }
 }
@@ -233,7 +233,7 @@ fun ContentView(info: ContentInfo, content: Content) {
                         fontWeight("normal")
                     }
                 }) {
-                    Text(info.id.name.v)
+                    Text(info.titleNotNull)
                 }
             }
             val elementId = remember { "content${Random.nextInt()}" }

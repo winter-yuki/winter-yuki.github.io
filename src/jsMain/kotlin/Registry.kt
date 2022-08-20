@@ -1,5 +1,5 @@
 object Storage {
-    val content: Map<ContentId, ContentInfo> = data.associate { it.id to it }
+    val content: Map<ContentId, ContentInfo> = data.associateBy { it.id }
 
     val substitution: Map<String, ContentId> = buildMap {
         data.forEach { info ->
@@ -15,15 +15,26 @@ object Storage {
     }
 }
 
+value class ContentTitle(val v: String) {
+    init {
+        require(v.isNotBlank())
+    }
+}
+
 data class ContentInfo(
+    val title: ContentTitle?,
     val id: ContentId,
     val access: ContentAccess,
     val permanentShortNames: List<String>,
     val shortNames: List<String>,
     val hideTitle: Boolean,
-)
+) {
+    val titleNotNull: String
+        get() = title?.v ?: id.name.v
+}
 
 private class ContentInfoBuilder {
+    var title: String? = null
     var access = ContentAccess.values().maxOf { it }
     var dir = emptyList<String>()
     var name: String? = null
@@ -34,6 +45,7 @@ private class ContentInfoBuilder {
     var hideTitle: Boolean = false
 
     fun build() = ContentInfo(
+        title?.let { ContentTitle(it) },
         ContentId(
             ContentDir(dir),
             ContentName(name!!),
@@ -66,6 +78,7 @@ private val testData = listOf(
         format = ContentFormat.TXT
     },
     contentInfo {
+        title = "Very interesting article"
         access = ContentAccess.Common
         name = "test3"
         date = "15.08.2022"
@@ -77,4 +90,10 @@ private val testData = listOf(
         format = ContentFormat.TXT
         permanentShortNames.add("short")
     },
+    contentInfo {
+        title = "Failed to load data"
+        access = ContentAccess.Common
+        name = "eesdfyguhijklkjb"
+        format = ContentFormat.TXT
+    }
 )

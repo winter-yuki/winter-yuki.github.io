@@ -79,15 +79,16 @@ data class ContentId(val dir: ContentDir, val name: ContentName, val date: Conte
     }
 
     companion object {
-        //                     dir           name     date             ext
-        private val regex = """(([\w\s/]+)/)?([\w\s]+)(\|([.\w]+)\|)?\.(\w+)""".toRegex()
+        // Example: dir1/dir2/name|day.month.year|.txt
+        private val regex = """(?:([\w\s/]+)/)?([\w\s\-]+)(?:\|([.\w]+)\|)?\.(\w+)""".toRegex()
+        //                     dir             name       date             ext
 
         fun fromPath(path: String): ContentId? {
             val groups = regex.matchEntire(path)?.groups ?: return null
-            val dir = ContentDir.of(groups[2]?.value.orEmpty())
-            val name = groups[3]?.let { ContentName(it.value) } ?: return null
-            val date = ContentDate(groups[5]?.value)
-            val ext = groups[6]?.let { ContentFormat.ofRepr(it.value) } ?: return null
+            val dir = ContentDir.of(groups[1]?.value.orEmpty())
+            val name = groups[2]?.let { ContentName(it.value) } ?: return null
+            val date = ContentDate(groups[3]?.value)
+            val ext = groups[4]?.let { ContentFormat.ofRepr(it.value) } ?: return null
             return ContentId(dir, name, date, ext)
         }
     }

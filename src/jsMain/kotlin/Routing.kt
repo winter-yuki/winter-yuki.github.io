@@ -44,7 +44,7 @@ class Routing {
             route = newRoute
             window.history.pushState(
                 data = Unit,
-                title = if (id == null) Const.TITLE else "${Const.TITLE}: ${id.name}",
+                title = Const.TITLE,
                 url = "${window.location.origin}/${id.toUrl()}".also {
                     console.log("onNavigate: url: $it")
                 }
