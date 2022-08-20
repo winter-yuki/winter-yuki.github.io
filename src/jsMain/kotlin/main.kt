@@ -1,14 +1,18 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.css.backgroundColor
+import org.jetbrains.compose.web.css.border
 import org.jetbrains.compose.web.css.color
 import org.jetbrains.compose.web.css.display
 import org.jetbrains.compose.web.css.em
@@ -19,20 +23,24 @@ import org.jetbrains.compose.web.css.marginLeft
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.paddingLeft
 import org.jetbrains.compose.web.css.paddingTop
+import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.rgb
 import org.jetbrains.compose.web.css.textAlign
 import org.jetbrains.compose.web.css.textDecoration
+import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
 import org.jetbrains.compose.web.dom.AttrBuilderContext
+import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.Header
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Section
+import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
 import org.w3c.dom.HTMLParagraphElement
@@ -136,17 +144,28 @@ fun loadContent(id: ContentId): State<LoadResult> =
 
 @Composable
 fun Loading() {
-    P(attrs = {
-        classes(SiteStylesheet.errorText)
-    }) {
-        Text("Loading...")
+    var wait by remember { mutableStateOf(true) }
+    if (wait) {
+        Delay(2000) { wait = false }
+    } else {
+        P(attrs = {
+            style {
+                padding(60.px)
+                fontSize(25.px)
+            }
+        }) {
+            Text("Loading...")
+        }
     }
 }
 
 @Composable
 fun FailedToLoad() {
     P(attrs = {
-        classes(SiteStylesheet.errorText)
+        style {
+            padding(60.px)
+            fontSize(25.px)
+        }
     }) {
         Text("Failed to load content. Please contact with developer ${Const.EMAIL}")
     }
@@ -174,25 +193,30 @@ fun Items(infos: Iterable<ContentInfo>, routing: Routing) {
 
 @Composable
 fun Item(info: ContentInfo, routing: Routing) {
-    Div(attrs = {
+    Button(attrs = {
         style {
             paddingLeft(40.px)
             paddingTop(20.px)
+            width(100.percent)
+            textAlign("left")
+            backgroundColor(Color.white)
+            border {
+                color(Color.white)
+            }
         }
         onClick { routing.onNavigate(info.id) }
     }) {
-        A(attrs = {
+        Span(attrs = {
             style {
-                textDecoration("none")
-                fontSize(30.px)
+                fontSize(25.px)
             }
         }) {
             Text(info.titleNotNull)
         }
-        Div(attrs = {
+        Span(attrs = {
             style {
+                fontSize(20.px)
                 color(Color.darkgray)
-                fontSize(25.px)
             }
         }) {
             Text(info.id.date.toString())
@@ -229,7 +253,7 @@ fun ContentView(info: ContentInfo, content: Content) {
                     style {
                         paddingTop(1.5.em)
                         textAlign("center")
-                        fontSize(20.pt)
+                        fontSize(17.pt)
                         fontWeight("normal")
                     }
                 }) {
@@ -265,7 +289,7 @@ fun ContentView(info: ContentInfo, content: Content) {
 fun Line(line: String) {
     Div(attrs = {
         style {
-            fontSize(14.pt)
+            fontSize(12.pt)
             padding(0.9.pt)
         }
     }) {
