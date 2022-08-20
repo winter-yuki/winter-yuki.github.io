@@ -98,7 +98,7 @@ fun Main(routing: Routing) {
             when (val route = routing.route) {
                 is Route.Root -> {
                     val items = remember {
-                        Storage.content.filter { it.value.access <= routing.access }.keys
+                        Storage.content.filter { it.value.access <= routing.access }.values
                     }
                     Items(items, routing)
                 }
@@ -108,6 +108,7 @@ fun Main(routing: Routing) {
                     val info = remember { Storage.content.getValue(route.id) }
                     when (val result = state.value) {
                         is LoadResult.Loading -> Loading()
+                        is LoadResult.Fail -> FailedToLoad()
                         is LoadResult.Success -> ContentView(info, result.content)
                     }
                 }
@@ -118,6 +119,7 @@ fun Main(routing: Routing) {
 
 sealed interface LoadResult {
     object Loading : LoadResult
+    object Fail : LoadResult
     data class Success(val content: Content) : LoadResult
 }
 
@@ -125,18 +127,28 @@ sealed interface LoadResult {
 fun loadContent(id: ContentId): State<LoadResult> =
     produceState<LoadResult>(initialValue = LoadResult.Loading, id) {
         val content = Content.load(id)
-        value = LoadResult.Success(content)
+        value = if (content != null) {
+            LoadResult.Success(content)
+        } else {
+            LoadResult.Fail
+        }
     }
 
 @Composable
 fun Loading() {
     P(attrs = {
-        style {
-            padding(60.px)
-            fontSize(30.px)
-        }
+        classes(SiteStylesheet.errorText)
     }) {
         Text("Loading...")
+    }
+}
+
+@Composable
+fun FailedToLoad() {
+    P(attrs = {
+        classes(SiteStylesheet.errorText)
+    }) {
+        Text("Failed to load content. Please contact with developer ${Const.EMAIL}")
     }
 }
 

@@ -1,5 +1,6 @@
 import kotlinx.browser.window
 import kotlinx.coroutines.CompletableDeferred
+import kotlin.js.Promise
 
 enum class ContentAccess(val repr: String) {
     Common(""), Extended("ext"), LinkAccess("nowaytoaccessthisthing42");
@@ -96,10 +97,12 @@ value class Content(val v: String) {
     override fun toString(): String = v
 
     companion object {
-        suspend fun load(id: ContentId): Content {
-            val completable = CompletableDeferred<Content>()
-            window.fetch(id.path).then { it.text() }.then {
-                val content = Content(it)
+        suspend fun load(id: ContentId): Content? {
+            val completable = CompletableDeferred<Content?>()
+            window.fetch(id.path).then {
+                if (it.ok) it.text() else Promise<String?> { resolve, _ -> resolve(null) }
+            }.then {
+                val content = it?.let { Content(it) }
                 completable.complete(content)
             }.catch {
                 completable.completeExceptionally(it)
