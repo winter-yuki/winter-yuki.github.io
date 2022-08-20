@@ -104,5 +104,11 @@ private val prodData = listOf(
         access = ContentAccess.Common
         name = "cs-edu-materials"
         format = ContentFormat.MD
+    },
+    contentInfo {
+        title = "Материалы по soft skills"
+        access = ContentAccess.Extended
+        name = "soft-materials"
+        format = ContentFormat.MD
     }
 )
