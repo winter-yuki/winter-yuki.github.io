@@ -1,4 +1,8 @@
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Div
@@ -12,5 +16,14 @@ fun Container(content: @Composable () -> Unit) {
         }
     }) {
         content()
+    }
+}
+
+@Composable
+fun Delay(timeMillis: Long, onTimeout: () -> Unit) {
+    val currentOnTimeout by rememberUpdatedState(onTimeout)
+    LaunchedEffect(true) {
+        delay(timeMillis)
+        currentOnTimeout()
     }
 }
