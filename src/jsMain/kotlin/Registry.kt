@@ -63,7 +63,7 @@ private inline fun contentInfo(block: ContentInfoBuilder.() -> Unit): ContentInf
     ContentInfoBuilder().apply(block).build()
 
 // Assign production data instead of test one
-private val data by lazy { testData }
+private val data by lazy { prodData }
 
 private val testData = listOf(
     contentInfo {
@@ -95,5 +95,14 @@ private val testData = listOf(
         access = ContentAccess.Common
         name = "eesdfyguhijklkjb"
         format = ContentFormat.TXT
+    }
+)
+
+private val prodData = listOf(
+    contentInfo {
+        title = "Материалы по CS"
+        access = ContentAccess.Common
+        name = "cs-edu-materials"
+        format = ContentFormat.MD
     }
 )

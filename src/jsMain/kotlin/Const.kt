@@ -1,4 +1,4 @@
 object Const {
-    const val TITLE = "Слова"
-    const val EMAIL = "justeveho@gmail.com"
+    const val TITLE = "Words"
+    const val EMAIL = "andrey.stoyan.csam@gmail.com"
 }
