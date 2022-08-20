@@ -34,20 +34,6 @@ value class ContentName(val v: String) {
     override fun toString(): String = v
 }
 
-value class ContentDate(val v: String?) {
-    init {
-        require(v == null || v.isNotBlank())
-    }
-
-    val isEmpty: Boolean
-        get() = v == null
-
-    override fun toString(): String = v.orEmpty()
-}
-
-val ContentDate.isNotEmpty: Boolean
-    get() = !isEmpty
-
 enum class ContentFormat(val repr: String) {
     TXT("txt"), MD("md"), ADOC("adoc");
 
@@ -61,7 +47,7 @@ enum class ContentFormat(val repr: String) {
 /**
  * Identifies content on server and on page as [path].
  */
-data class ContentId(val dir: ContentDir, val name: ContentName, val date: ContentDate, val format: ContentFormat) {
+data class ContentId(val dir: ContentDir, val name: ContentName, val format: ContentFormat) {
     val path by lazy {
         buildString {
             if (dir.isNotEmpty()) {
@@ -69,27 +55,21 @@ data class ContentId(val dir: ContentDir, val name: ContentName, val date: Conte
                 append('/')
             }
             append(name)
-            if (date.isNotEmpty) {
-                append('|')
-                append(date)
-                append('|')
-            }
             append(format.extension)
         }
     }
 
     companion object {
         // Example: dir1/dir2/name|day.month.year|.txt
-        private val regex = """(?:([\w\s/]+)/)?([\w\s\-]+)(?:\|([.\w]+)\|)?\.(\w+)""".toRegex()
-        //                     dir             name       date             ext
+        private val regex = """(?:([\w\s/]+)/)?([\w\s\-]+)?\.(\w+)""".toRegex()
+        //                     dir             name       ext
 
         fun fromPath(path: String): ContentId? {
             val groups = regex.matchEntire(path)?.groups ?: return null
             val dir = ContentDir.of(groups[1]?.value.orEmpty())
             val name = groups[2]?.let { ContentName(it.value) } ?: return null
-            val date = ContentDate(groups[3]?.value)
-            val ext = groups[4]?.let { ContentFormat.ofRepr(it.value) } ?: return null
-            return ContentId(dir, name, date, ext)
+            val ext = groups[3]?.let { ContentFormat.ofRepr(it.value) } ?: return null
+            return ContentId(dir, name, ext)
         }
     }
 }

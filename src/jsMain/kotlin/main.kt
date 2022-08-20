@@ -196,7 +196,7 @@ fun Item(info: ContentInfo, routing: Routing) {
     Button(attrs = {
         style {
             paddingLeft(40.px)
-            paddingTop(20.px)
+            paddingTop(14.px)
             width(100.percent)
             textAlign("left")
             backgroundColor(Color.white)
@@ -206,20 +206,20 @@ fun Item(info: ContentInfo, routing: Routing) {
         }
         onClick { routing.onNavigate(info.id) }
     }) {
-        Span(attrs = {
+        Div(attrs = {
             style {
                 fontSize(25.px)
             }
         }) {
             Text(info.titleNotNull)
         }
-        Span(attrs = {
+        Div(attrs = {
             style {
                 fontSize(20.px)
                 color(Color.darkgray)
             }
         }) {
-            Text(info.id.date.toString())
+            Text(info.date.toString())
         }
     }
 }
