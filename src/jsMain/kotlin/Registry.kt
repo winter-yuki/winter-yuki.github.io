@@ -21,8 +21,23 @@ value class ContentTitle(val v: String) {
     }
 }
 
+value class ContentDate(val v: String?) {
+    init {
+        require(v == null || v.isNotBlank())
+    }
+
+    override fun toString(): String = v.orEmpty()
+}
+
+val ContentDate.isEmpty: Boolean
+    get() = v == null
+
+val ContentDate.isNotEmpty: Boolean
+    get() = !isEmpty
+
 data class ContentInfo(
     val title: ContentTitle?,
+    val date: ContentDate,
     val id: ContentId,
     val access: ContentAccess,
     val permanentShortNames: List<String>,
@@ -46,10 +61,10 @@ private class ContentInfoBuilder {
 
     fun build() = ContentInfo(
         title?.let { ContentTitle(it) },
+        ContentDate(date),
         ContentId(
             ContentDir(dir),
             ContentName(name!!),
-            ContentDate(date),
             format!!
         ),
         access,
