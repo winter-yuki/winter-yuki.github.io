@@ -32,8 +32,6 @@ import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
-import org.jetbrains.compose.web.dom.AttrBuilderContext
-import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
@@ -43,7 +41,6 @@ import org.jetbrains.compose.web.dom.Section
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
-import org.w3c.dom.HTMLParagraphElement
 import kotlin.random.Random
 
 fun main() {
@@ -74,7 +71,7 @@ fun Head(routing: Routing) {
         }
     }) {
         Container {
-            A(routing.rootUrl, attrs = {
+            A(routing.url(null), attrs = {
                 style {
                     if (routing.route.isRoot) {
                         paddingTop(1.em)
@@ -193,7 +190,7 @@ fun Items(infos: Iterable<ContentInfo>, routing: Routing) {
 
 @Composable
 fun Item(info: ContentInfo, routing: Routing) {
-    Button(attrs = {
+    Div(attrs = {
         style {
             paddingLeft(40.px)
             paddingTop(14.px)
@@ -204,18 +201,21 @@ fun Item(info: ContentInfo, routing: Routing) {
                 color(Color.white)
             }
         }
-        onClick { routing.onNavigate(info.id) }
     }) {
-        Div(attrs = {
+        A(routing.url(info.id), attrs = {
             style {
-                fontSize(25.px)
+                fontSize(2.em)
+                display(DisplayStyle.Block)
+                textDecoration("none")
+                color(Color.black)
             }
+            onClick { routing.onNavigate(info.id) }
         }) {
             Text(info.titleNotNull)
         }
-        Div(attrs = {
+        Span(attrs = {
             style {
-                fontSize(20.px)
+                fontSize(1.4.em)
                 color(Color.darkgray)
             }
         }) {
@@ -296,24 +296,3 @@ fun Line(line: String) {
         Text(line)
     }
 }
-
-sealed interface RenderingResult {
-    val attrs: AttrBuilderContext<HTMLParagraphElement>
-
-    data class Plain(override val attrs: AttrBuilderContext<HTMLParagraphElement> = {}) : RenderingResult
-
-    data class Rendered(
-        val html: String,
-        override val attrs: AttrBuilderContext<HTMLParagraphElement>
-    ) : RenderingResult
-}
-
-fun render(id: ContentId, content: Content): RenderingResult =
-    when (id.format) {
-        ContentFormat.TXT -> RenderingResult.Plain()
-        ContentFormat.MD -> {
-            val parse = js("marked.parse") as (String) -> String
-            RenderingResult.Rendered(parse(content.v), attrs = { classes("markdown-body") })
-        }
-        ContentFormat.ADOC -> RenderingResult.Plain()
-    }

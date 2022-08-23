@@ -24,9 +24,6 @@ class Routing {
     var route: Route by mutableStateOf(route())
         private set
 
-    val rootUrl: String
-        get() = null.toUrl()
-
     init {
         window.onpopstate = {
             route = route().also {
@@ -35,6 +32,8 @@ class Routing {
             Unit.asDynamic()
         }
     }
+
+    fun url(id: ContentId?): String = id.toUrl()
 
     fun onNavigate(id: ContentId?) {
         val newRoute = id.toRoute().also {
