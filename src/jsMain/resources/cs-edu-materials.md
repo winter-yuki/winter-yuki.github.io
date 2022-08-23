@@ -69,6 +69,13 @@
 
 - https://www.gitignore.io/
 
+### Python
+
+- Питон для самых маленьких: https://stepik.org/course/67/syllabus
+- Питон для тех кто побольше: https://stepik.org/course/512/syllabus
+- Крутой курс лекций: https://www.youtube.com/watch?v=-py9GXvJk6A&list=PLlb7e2G7aSpQhNphPSpcO4daaRPeVstku
+- Слайды курса маги ITMO JB: https://wiki.compscicenter.ru/index.php/Python_5SE_%D0%BE%D1%81%D0%B5%D0%BD%D1%8C_2021
+
 ### Android
 
 - Cool Udacity course by Google: https://classroom.udacity.com/courses/ud9012
