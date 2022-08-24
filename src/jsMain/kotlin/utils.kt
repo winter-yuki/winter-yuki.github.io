@@ -10,10 +10,10 @@ import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLParagraphElement
 
 @Composable
-fun Container(content: @Composable () -> Unit) {
+fun Container(widthMultiplier: Double = 1.0, content: @Composable () -> Unit) {
     Div(attrs = {
         style {
-            width(930.px)
+            width((widthMultiplier * 930).px)
             property("margin", "0 auto")
         }
     }) {

@@ -245,7 +245,7 @@ fun NotFound() {
 @Composable
 fun ContentView(info: ContentInfo, content: Content) {
     Article {
-        Container {
+        Container(widthMultiplier = info.contentWidthMultiplier) {
             if (info.hideTitle || info.id.format != ContentFormat.TXT) {
                 Div(attrs = { style { height(3.em) } }) { }
             } else {
