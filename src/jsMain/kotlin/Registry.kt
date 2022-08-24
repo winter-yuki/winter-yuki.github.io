@@ -43,6 +43,7 @@ data class ContentInfo(
     val permanentShortNames: List<String>,
     val shortNames: List<String>,
     val hideTitle: Boolean,
+    val contentWidthMultiplier: Double,
 ) {
     val titleNotNull: String
         get() = title?.v ?: id.name.v
@@ -58,6 +59,7 @@ private class ContentInfoBuilder {
     val permanentShortNames = mutableListOf<String>() // Do not remove permanent names!
     val shortNames = mutableListOf<String>()
     var hideTitle: Boolean = false
+    var contentWidthMultiplier: Double = 1.0
 
     fun build() = ContentInfo(
         title?.let { ContentTitle(it) },
@@ -70,7 +72,8 @@ private class ContentInfoBuilder {
         access,
         permanentShortNames = permanentShortNames,
         shortNames = shortNames,
-        hideTitle = hideTitle
+        hideTitle = hideTitle,
+        contentWidthMultiplier = contentWidthMultiplier
     )
 }
 
