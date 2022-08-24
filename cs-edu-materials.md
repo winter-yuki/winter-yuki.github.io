@@ -54,7 +54,9 @@
 
 ### Git
 
-#### Сам гит
+- Хорошо написанная официальная книжка, очень рекомендуется прочесть и осознать её всю: https://git-scm.com/book/en/v2
+- Слайды маги ITMO JB: https://wiki.compscicenter.ru/index.php/Unix_5SE_%D0%BE%D1%81%D0%B5%D0%BD%D1%8C_2021
+- Можно в качестве упражнения на пару дней написать свой упрощенный клон гита, потому что понимание гита основано на понимании его кишок
 
 - http://www-cs-students.stanford.edu/~blynn/gitmagic/intl/ru/ch01.html
 - http://zzet.org/git/learning/undev/coursify/2014/02/09/lection-1-git-course-undev.html
