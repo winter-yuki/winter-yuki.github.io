@@ -1,5 +1,4 @@
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -7,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.Style
@@ -41,7 +39,6 @@ import org.jetbrains.compose.web.dom.Section
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
-import kotlin.random.Random
 
 fun main() {
     renderComposable(rootElementId = "root") {
@@ -208,6 +205,7 @@ fun Item(info: ContentInfo, routing: Routing) {
                 display(DisplayStyle.Block)
                 textDecoration("none")
                 color(Color.black)
+                fontWeight("330")
             }
             onClick { routing.onNavigate(info.id) }
         }) {
@@ -260,25 +258,24 @@ fun ContentView(info: ContentInfo, content: Content) {
                     Text(info.titleNotNull)
                 }
             }
-            val elementId = remember { "content${Random.nextInt()}" }
-            val rendered = render(info.id, content)
-            P(attrs = {
-                id(elementId)
-                rendered.run { attrs() }
-            }) {
-                when (rendered) {
-                    is RenderingResult.Plain -> {
+            when (val rendered = render(info.id, content)) {
+                is RenderingResult.Plain -> {
+                    P(attrs = { rendered.run { attrs() } }) {
                         content.v.lines().forEach {
                             Line(it)
                         }
                     }
-                    is RenderingResult.Rendered -> {
-                        LaunchedEffect(content) {
-                            val element = window.document.getElementById(elementId)
-                            requireNotNull(element) { "Content element is not rendered" }
-                            element.innerHTML = rendered.html
+                }
+                is RenderingResult.Rendered -> {
+                    P(attrs = {
+                        rendered.run { attrs() }
+                        ref {
+                            it.innerHTML = rendered.html
+                            onDispose {
+                                it.innerHTML = ""
+                            }
                         }
-                    }
+                    }) { }
                 }
             }
         }
