@@ -205,6 +205,7 @@ fun Item(info: ContentInfo, routing: Routing) {
                 display(DisplayStyle.Block)
                 textDecoration("none")
                 color(Color.black)
+                fontWeight("330")
             }
             onClick { routing.onNavigate(info.id) }
         }) {
