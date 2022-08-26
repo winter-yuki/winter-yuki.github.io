@@ -1,34 +1,10 @@
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
-import kotlinx.coroutines.delay
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.width
+package ui
+
+import content.Content
+import content.ContentFormat
+import content.ContentId
 import org.jetbrains.compose.web.dom.AttrBuilderContext
-import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLParagraphElement
-
-@Composable
-fun Container(widthMultiplier: Double = 1.0, content: @Composable () -> Unit) {
-    Div(attrs = {
-        style {
-            width((widthMultiplier * 930).px)
-            property("margin", "0 auto")
-        }
-    }) {
-        content()
-    }
-}
-
-@Composable
-fun Delay(timeMillis: Long, onTimeout: () -> Unit) {
-    val currentOnTimeout by rememberUpdatedState(onTimeout)
-    LaunchedEffect(true) {
-        delay(timeMillis)
-        currentOnTimeout()
-    }
-}
 
 sealed interface RenderingResult {
     val attrs: AttrBuilderContext<HTMLParagraphElement>
