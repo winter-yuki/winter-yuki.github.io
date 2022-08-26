@@ -65,6 +65,6 @@ private val testData = listOf(
         access = ContentAccess.Common
         name = "ReadMe"
         format = ContentFormat.MD
-        location = "https://raw.githubusercontent.com/winter-yuki/kotlin/master"
+        location = "https://raw.githubusercontent.com/JetBrains/kotlin/master/ReadMe.md"
     },
 )
