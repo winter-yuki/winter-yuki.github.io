@@ -1,6 +1,8 @@
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import content.ContentAccess
+import content.ContentId
 import kotlinx.browser.window
 
 sealed interface Route {
@@ -21,19 +23,21 @@ class Routing {
     var access: ContentAccess by mutableStateOf(ContentAccess.Common)
         private set
 
-    var route: Route by mutableStateOf(route())
+    var route: Route by mutableStateOf(currentRoute())
         private set
 
     init {
         window.onpopstate = {
-            route = route().also {
+            route = currentRoute().also {
                 console.log("onpopstate: route = $route, newRoute = $it")
             }
             Unit.asDynamic()
         }
     }
 
-    fun url(id: ContentId?): String = id.toUrl()
+    fun url(id: ContentId?): String =
+        // Prefix is always needed to not reload page
+        PREFIX + (id?.path ?: if (access.repr.isEmpty()) "" else "!${access.repr}")
 
     fun onNavigate(id: ContentId?) {
         val newRoute = id.toRoute().also {
@@ -44,22 +48,18 @@ class Routing {
             window.history.pushState(
                 data = Unit,
                 title = Const.TITLE,
-                url = "${window.location.origin}/${id.toUrl()}".also {
+                url = "${window.location.origin}/${url(id)}".also {
                     console.log("onNavigate: url: $it")
                 }
             )
         }
     }
 
-    private fun ContentId?.toUrl(): String =
-        // Prefix is always needed to not reload page
-        PREFIX + (this?.path ?: if (access.repr.isEmpty()) "" else "!${access.repr}")
-
     private fun ContentId?.toRoute(): Route =
         if (this == null) Route.Root
         else Route.Content(this)
 
-    private fun route(): Route {
+    private fun currentRoute(): Route {
         fun <T> T.log(msg: (T) -> String): T = also { console.log("route: ${msg(it)}") }
         val hash = window.location.hash.log { "hash = $it" }
         if (hash.isEmpty()) return Route.Root
@@ -80,9 +80,9 @@ class Routing {
             else -> {
                 val path = accessOrPath
                 val id = ContentId.fromPath(path).log { "id = $it" }
-                if (id != null && id in Storage.content) return Route.Content(id)
+                if (id != null && id in Registry.content) return Route.Content(id)
                 log { "not found in content" }
-                val afterSubstitution = Storage.substitution[path] ?: return Route.Unknown.log { "no substitution" }
+                val afterSubstitution = Registry.substitution[path] ?: return Route.Unknown.log { "no substitution" }
                 return Route.Content(afterSubstitution)
             }
         }
