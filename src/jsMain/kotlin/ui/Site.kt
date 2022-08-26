@@ -124,7 +124,7 @@ fun Main(routing: Routing) {
 @Composable
 fun ItemsView(routing: Routing, items: Iterable<ContentInfo>) {
     Section {
-        Container {
+        Container(widthMultiplier = 0.8) {
             items.forEach { item ->
                 key(item) {
                     Item(item, routing)
@@ -138,8 +138,7 @@ fun ItemsView(routing: Routing, items: Iterable<ContentInfo>) {
 fun Item(info: ContentInfo, routing: Routing) {
     Div(attrs = {
         style {
-            paddingLeft(40.px)
-            paddingTop(14.px)
+            paddingTop(1.em)
             width(100.percent)
             textAlign("left")
             backgroundColor(Color.white)
