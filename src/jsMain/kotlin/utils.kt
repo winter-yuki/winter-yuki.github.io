@@ -3,7 +3,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import kotlinx.coroutines.delay
-import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLParagraphElement
 fun Container(widthMultiplier: Double = 1.0, content: @Composable () -> Unit) {
     Div(attrs = {
         style {
-            width((widthMultiplier * 930).px)
+            width((widthMultiplier * 50).em)
             property("margin", "0 auto")
         }
     }) {

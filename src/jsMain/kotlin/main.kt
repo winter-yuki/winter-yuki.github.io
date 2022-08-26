@@ -96,16 +96,22 @@ fun Head(routing: Routing) {
 @Composable
 fun Main(routing: Routing) {
     Section {
-        Container {
-            when (val route = routing.route) {
-                is Route.Root -> {
+        when (val route = routing.route) {
+            is Route.Root -> {
+                Container(widthMultiplier = 1.0) {
                     val items = remember {
                         Storage.content.filter { it.value.access <= routing.access }.values
                     }
                     Items(items, routing)
                 }
-                is Route.Unknown -> NotFound()
-                is Route.Content -> {
+            }
+            is Route.Unknown -> {
+                Container(widthMultiplier = 1.1) {
+                    NotFound()
+                }
+            }
+            is Route.Content -> {
+                Container {
                     val state = loadContent(route.id)
                     val info = remember { Storage.content.getValue(route.id) }
                     when (val result = state.value) {
