@@ -3,7 +3,10 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlin.js.Promise
 
 enum class ContentAccess(val repr: String) {
-    Common(""), Extended("ext"), LinkAccess("nowaytoaccessthisthing42");
+    Common(""),
+    Draft("draft"),
+    Extended("ext"),
+    LinkAccess("nowaytoaccessthisthing42");
 
     companion object {
         fun ofRepr(repr: String): ContentAccess? = values().find { it.repr == repr }
