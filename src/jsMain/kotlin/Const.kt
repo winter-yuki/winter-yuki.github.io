@@ -82,4 +82,11 @@ private val prodData = listOf(
         name = "soft-materials"
         format = ContentFormat.MD
     },
+    contentInfo {
+        title = "Self-types for Kotlin"
+        access = ContentAccess.Draft
+        name = "kotlin-self-types"
+        format = ContentFormat.MD
+        location = "https://raw.githubusercontent.com/winter-yuki/kotlin-self-types/main/README.md"
+    },
 )
