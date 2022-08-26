@@ -15,17 +15,7 @@ data class ContentInfo(
 ) {
     val id = ContentId(dir, name, format)
     val titleNotNull = title?.v ?: id.name.v
-
-    val url: String = buildString {
-        if (location != null) {
-            val url = location.url.toString()
-            append(url)
-            if (!url.endsWith('/')) {
-                append('/')
-            }
-        }
-        append(id.path)
-    }
+    val url: String = location?.url?.toString() ?: id.path
 }
 
 class ContentInfoBuilder {
