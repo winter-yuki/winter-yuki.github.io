@@ -8,6 +8,11 @@ import content.contentInfo
 object Const {
     const val TITLE = "Слова"
     const val EMAIL = "justeveho@gmail.com"
+    const val GITHUB = "https://github.com/winter-yuki"
+    const val NOT_FOUND = "Page not found"
+    const val LOADING = "Loading..."
+    const val LOAD_FAILED = "Failed to load content. Please contact with developer $EMAIL"
+    const val SHOW_FOOTER_CONTENT = true
 }
 
 object Registry {

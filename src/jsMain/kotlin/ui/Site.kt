@@ -15,6 +15,8 @@ import content.ContentFormat
 import content.ContentInfo
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.JustifyContent
+import org.jetbrains.compose.web.css.StyleScope
 import org.jetbrains.compose.web.css.backgroundColor
 import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.css.border
@@ -24,8 +26,12 @@ import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.fontSize
 import org.jetbrains.compose.web.css.fontWeight
 import org.jetbrains.compose.web.css.height
+import org.jetbrains.compose.web.css.justifyContent
 import org.jetbrains.compose.web.css.marginLeft
+import org.jetbrains.compose.web.css.marginRight
+import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.padding
+import org.jetbrains.compose.web.css.paddingLeft
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
@@ -40,10 +46,12 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.Header
+import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Section
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.Ul
 
 @Composable
 fun Site() {
@@ -95,10 +103,52 @@ fun Head(routing: Routing) {
 fun Foot() {
     Footer(attrs = {
         style {
-            height(100.px)
+            height(8.em)
         }
     }) {
-        Text("")
+        Container {
+            if (Const.SHOW_FOOTER_CONTENT) {
+                Div(attrs = {
+                    style {
+                        textAlign("center")
+                    }
+                }) {
+                    Ul(attrs = {
+                        style {
+                            paddingTop(2.em)
+                            paddingLeft(0.em)
+                            display(DisplayStyle.InlineBlock)
+                        }
+                    }) {
+                        fun StyleScope.li() {
+                            property("float", "left")
+                            display(DisplayStyle.Block)
+                        }
+                        Li(attrs = {
+                            style {
+                                li()
+                                marginRight(2.em)
+                            }
+                        }) {
+                            Text(Const.EMAIL)
+                        }
+                        Li(attrs = {
+                            style {
+                                li()
+                            }
+                        }) {
+                            A(Const.GITHUB, attrs = {
+                                style {
+                                    color(Color.black)
+                                }
+                            }) {
+                                Text("github")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -182,7 +232,7 @@ fun NotFound() {
                     attr("margin", "0 auto")
                 }
             }) {
-                Text("Страница не найдена")
+                Text(Const.NOT_FOUND)
             }
         }
     }
@@ -212,7 +262,7 @@ fun Loading() {
                         fontSize(25.px)
                     }
                 }) {
-                    Text("Loading...")
+                    Text(Const.LOADING)
                 }
             }
         }
@@ -229,7 +279,7 @@ fun FailedToLoad() {
                     fontSize(25.px)
                 }
             }) {
-                Text("Failed to load content. Please contact with developer ${Const.EMAIL}")
+                Text(Const.LOAD_FAILED)
             }
         }
     }
