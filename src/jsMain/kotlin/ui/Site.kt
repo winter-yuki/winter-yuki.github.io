@@ -323,7 +323,7 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
             if (info.source != null) {
                 Div(attrs = {
                     style {
-                        paddingTop(1.5.em)
+                        paddingTop(1.em)
                         width(100.percent)
                         textAlign("right")
                     }
