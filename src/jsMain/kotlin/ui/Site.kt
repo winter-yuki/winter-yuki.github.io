@@ -315,6 +315,24 @@ fun ContentView(info: ContentInfo, content: Content) {
                     }) { }
                 }
             }
+            if (info.source != null) {
+                Div(attrs = {
+                    style {
+                        width(100.percent)
+                        textAlign("right")
+                    }
+                }) {
+                    A(info.source.url.href, attrs = {
+                        style {
+                            paddingTop(1.5.em)
+                            paddingLeft(1.em)
+                            color(Color.black)
+                        }
+                    }) {
+                        Text(Const.SOURCE)
+                    }
+                }
+            }
         }
     }
 }
