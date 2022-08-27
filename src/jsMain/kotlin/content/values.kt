@@ -61,7 +61,7 @@ value class ContentLocation(val url: URL) {
 value class ContentSource(val url: URL) {
     constructor(s: String) : this(URL(s))
 
-    override fun toString(): String  = url.toString()
+    override fun toString(): String = url.toString()
 }
 
 value class ContentDir(val elements: List<String>) {
