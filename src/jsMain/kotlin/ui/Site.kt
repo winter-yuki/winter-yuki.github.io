@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import content.Content
 import content.ContentFormat
 import content.ContentInfo
+import content.ContentUpdateStatus
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.backgroundColor
@@ -24,8 +25,8 @@ import org.jetbrains.compose.web.css.fontSize
 import org.jetbrains.compose.web.css.fontWeight
 import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.marginLeft
+import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.padding
-import org.jetbrains.compose.web.css.paddingLeft
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
@@ -165,7 +166,7 @@ fun Item(info: ContentInfo, routing: Routing) {
                 color(Color.darkgray)
             }
         }) {
-            Text(info.date.toString())
+            Text(info.status.toString())
         }
     }
 }
