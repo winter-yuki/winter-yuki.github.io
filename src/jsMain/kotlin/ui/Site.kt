@@ -13,10 +13,10 @@ import androidx.compose.runtime.setValue
 import content.Content
 import content.ContentFormat
 import content.ContentInfo
-import content.ContentUpdateStatus
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.backgroundColor
+import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.css.border
 import org.jetbrains.compose.web.css.color
 import org.jetbrains.compose.web.css.display
@@ -25,18 +25,17 @@ import org.jetbrains.compose.web.css.fontSize
 import org.jetbrains.compose.web.css.fontWeight
 import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.marginLeft
-import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.rgb
 import org.jetbrains.compose.web.css.textAlign
 import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
+import org.jetbrains.compose.web.dom.Br
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
@@ -58,7 +57,7 @@ fun Site() {
 fun Head(routing: Routing) {
     Header(attrs = {
         style {
-            backgroundColor(rgb(251, 127, 220))
+            backgroundImage("linear-gradient(#FB77FF, white)")
             if (routing.route.isRoot) {
                 height(15.em)
             } else {
@@ -70,15 +69,15 @@ fun Head(routing: Routing) {
             A(routing.url(null), attrs = {
                 style {
                     if (routing.route.isRoot) {
-                        paddingTop(1.em)
+                        paddingTop(0.7.em)
                         fontSize(5.em)
                     } else {
-                        paddingTop(0.5.em)
+                        paddingTop(0.3.em)
                         fontSize(3.em)
                     }
                     marginLeft(1.em)
-                    fontWeight("bold")
-                    color(Color.white)
+                    fontWeight("300")
+                    color(Color("#565656"))
                     textDecoration("none")
                     display(DisplayStyle.Block)
                 }
@@ -256,7 +255,9 @@ fun ContentView(info: ContentInfo, content: Content) {
             }
             when (val rendered = render(info.id, content)) {
                 is RenderingResult.Plain -> {
-                    P(attrs = { rendered.run { attrs() } }) {
+                    P(attrs = {
+                        rendered.run { attrs() }
+                    }) {
                         content.v.lines().forEach {
                             Line(it)
                         }
@@ -280,12 +281,6 @@ fun ContentView(info: ContentInfo, content: Content) {
 
 @Composable
 fun Line(line: String) {
-    Div(attrs = {
-        style {
-            fontSize(12.pt)
-            padding(0.9.pt)
-        }
-    }) {
-        Text(line)
-    }
+    Text(line)
+    Br()
 }
