@@ -15,7 +15,6 @@ import content.ContentFormat
 import content.ContentInfo
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.JustifyContent
 import org.jetbrains.compose.web.css.StyleScope
 import org.jetbrains.compose.web.css.backgroundColor
 import org.jetbrains.compose.web.css.backgroundImage
@@ -26,10 +25,8 @@ import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.fontSize
 import org.jetbrains.compose.web.css.fontWeight
 import org.jetbrains.compose.web.css.height
-import org.jetbrains.compose.web.css.justifyContent
 import org.jetbrains.compose.web.css.marginLeft
 import org.jetbrains.compose.web.css.marginRight
-import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.paddingLeft
 import org.jetbrains.compose.web.css.paddingTop
@@ -103,47 +100,40 @@ fun Head(routing: Routing) {
 fun Foot() {
     Footer(attrs = {
         style {
-            height(8.em)
+            textAlign("center")
         }
     }) {
         Container {
             if (Const.SHOW_FOOTER_CONTENT) {
-                Div(attrs = {
+                Ul(attrs = {
                     style {
-                        textAlign("center")
+                        padding(3.em)
+                        display(DisplayStyle.InlineBlock)
                     }
                 }) {
-                    Ul(attrs = {
+                    fun StyleScope.li() {
+                        property("float", "left")
+                        display(DisplayStyle.Block) // Remove bullets
+                    }
+                    Li(attrs = {
                         style {
-                            paddingTop(2.em)
-                            paddingLeft(0.em)
-                            display(DisplayStyle.InlineBlock)
+                            li()
+                            marginRight(2.em)
                         }
                     }) {
-                        fun StyleScope.li() {
-                            property("float", "left")
-                            display(DisplayStyle.Block)
+                        Text(Const.EMAIL)
+                    }
+                    Li(attrs = {
+                        style {
+                            li()
                         }
-                        Li(attrs = {
+                    }) {
+                        A(Const.GITHUB, attrs = {
                             style {
-                                li()
-                                marginRight(2.em)
+                                color(Color.black)
                             }
                         }) {
-                            Text(Const.EMAIL)
-                        }
-                        Li(attrs = {
-                            style {
-                                li()
-                            }
-                        }) {
-                            A(Const.GITHUB, attrs = {
-                                style {
-                                    color(Color.black)
-                                }
-                            }) {
-                                Text("github")
-                            }
+                            Text("github")
                         }
                     }
                 }
