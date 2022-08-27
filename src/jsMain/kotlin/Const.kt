@@ -2,7 +2,6 @@ import content.ContentAccess
 import content.ContentFormat
 import content.ContentId
 import content.ContentInfo
-import content.ContentSource
 import content.ContentUpdateStatus
 import content.contentInfo
 
