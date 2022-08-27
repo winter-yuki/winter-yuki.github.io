@@ -5,7 +5,7 @@ data class ContentInfo(
     val name: ContentName,
     val format: ContentFormat,
     val title: ContentTitle?,
-    val date: ContentDate,
+    val status: ContentUpdateStatus,
     val access: ContentAccess,
     val location: ContentLocation?,
     val permanentShortNames: List<String>,
@@ -23,7 +23,7 @@ class ContentInfoBuilder {
     var access = ContentAccess.values().maxOf { it }
     var dir = emptyList<String>()
     var name: String? = null
-    var date: String? = null
+    var status: ContentUpdateStatus = ContentUpdateStatus.None
     var format: ContentFormat? = null
     var location: String? = null
     val permanentShortNames = mutableListOf<String>() // Do not remove permanent names!
@@ -36,7 +36,7 @@ class ContentInfoBuilder {
         name = ContentName(name!!),
         format = format!!,
         title = title?.let { ContentTitle(it) },
-        date = ContentDate(date),
+        status = status,
         location = location?.let { ContentLocation(it) },
         access = access,
         permanentShortNames = permanentShortNames,

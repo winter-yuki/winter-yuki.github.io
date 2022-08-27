@@ -8,6 +8,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.rememberUpdatedState
 import content.Content
 import content.ContentInfo
+import content.load
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.width

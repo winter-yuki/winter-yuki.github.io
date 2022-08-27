@@ -10,23 +10,39 @@ value class ContentTitle(val v: String) {
     override fun toString(): String = v
 }
 
-value class ContentDate(val v: String?) {
-    init {
-        require(v == null || v.isNotBlank())
+sealed interface ContentUpdateStatus {
+    object Continuous : ContentUpdateStatus {
+        override fun toString(): String = "Continuous update"
     }
 
-    override fun toString(): String = v.orEmpty()
+    object Draft : ContentUpdateStatus {
+        override fun toString(): String = "Draft"
+    }
+
+    object None : ContentUpdateStatus {
+        override fun toString(): String = ""
+    }
+
+    value class Done(val date: ContentDate) : ContentUpdateStatus {
+        constructor(s: String) : this(ContentDate(s))
+
+        override fun toString(): String = date.toString()
+    }
 }
 
-val ContentDate.isEmpty: Boolean
-    get() = v == null
+val ContentUpdateStatus.isNone: Boolean
+    get() = this is ContentUpdateStatus.None
 
-val ContentDate.isNotEmpty: Boolean
-    get() = !isEmpty
+value class ContentDate(val v: String) {
+    init {
+        require(v.isNotBlank())
+    }
+
+    override fun toString(): String = v
+}
 
 enum class ContentAccess(val repr: String) {
     Common(""),
-    Draft("draft"),
     Extended("ext"),
     LinkAccess("nowaytoaccessthisthing42");
 
@@ -73,4 +89,10 @@ enum class ContentFormat(val repr: String) {
     companion object {
         fun ofRepr(repr: String): ContentFormat? = values().find { it.repr == repr }
     }
+}
+
+value class Content(val v: String) {
+    override fun toString(): String = v
+
+    companion object
 }
