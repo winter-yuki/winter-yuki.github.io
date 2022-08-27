@@ -28,8 +28,6 @@ import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.marginLeft
 import org.jetbrains.compose.web.css.marginRight
 import org.jetbrains.compose.web.css.padding
-import org.jetbrains.compose.web.css.paddingLeft
-import org.jetbrains.compose.web.css.paddingRight
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
@@ -311,6 +309,7 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
                         rendered.run { attrs() }
                         ref {
                             it.innerHTML = rendered.html
+                            js("hljs.highlightAll();")
                             onContentLoadedUpdate(true)
                             onDispose {
                                 it.innerHTML = ""
