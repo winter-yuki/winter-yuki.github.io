@@ -2,3 +2,7 @@
 
 - q
 - w
+
+```kotlin
+fun f(): Int = 42
+```
