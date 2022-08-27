@@ -1,5 +1,6 @@
 package content
 
+import Const
 import org.w3c.dom.url.URL
 
 value class ContentTitle(val v: String) {
@@ -12,11 +13,11 @@ value class ContentTitle(val v: String) {
 
 sealed interface ContentUpdateStatus {
     object Continuous : ContentUpdateStatus {
-        override fun toString(): String = "Continuous update"
+        override fun toString(): String = Const.STATUS_UPDATING
     }
 
     object Draft : ContentUpdateStatus {
-        override fun toString(): String = "Draft"
+        override fun toString(): String = Const.STATUS_DRAFT
     }
 
     object None : ContentUpdateStatus {
@@ -55,6 +56,12 @@ value class ContentLocation(val url: URL) {
     constructor(s: String) : this(URL(s))
 
     override fun toString(): String = url.toString()
+}
+
+value class ContentSource(val url: URL) {
+    constructor(s: String) : this(URL(s))
+
+    override fun toString(): String  = url.toString()
 }
 
 value class ContentDir(val elements: List<String>) {
