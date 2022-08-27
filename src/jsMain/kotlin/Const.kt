@@ -78,18 +78,21 @@ private val prodData = listOf(
         access = ContentAccess.Common
         name = "cs-edu-materials"
         format = ContentFormat.MD
+        status = ContentUpdateStatus.Continuous
     },
     contentInfo {
         title = "Материалы по soft skills"
         access = ContentAccess.Extended
         name = "soft-materials"
         format = ContentFormat.MD
+        status = ContentUpdateStatus.Continuous
     },
     contentInfo {
         title = "Self-types for Kotlin"
-        access = ContentAccess.Draft
+        access = ContentAccess.Common
         name = "kotlin-self-types"
         format = ContentFormat.MD
         location = "https://raw.githubusercontent.com/winter-yuki/kotlin-self-types/main/README.md"
+        status = ContentUpdateStatus.Draft
     },
-)
+).asReversed()
