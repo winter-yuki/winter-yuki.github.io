@@ -104,5 +104,6 @@ private val prodData = listOf(
         format = ContentFormat.MD
         location = "https://raw.githubusercontent.com/winter-yuki/kotlin-self-types/main/README.md"
         status = ContentUpdateStatus.Draft
+        source = "https://github.com/winter-yuki/kotlin-self-types"
     },
 ).asReversed()
