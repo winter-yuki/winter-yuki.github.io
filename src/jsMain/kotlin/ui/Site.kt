@@ -29,6 +29,7 @@ import org.jetbrains.compose.web.css.marginLeft
 import org.jetbrains.compose.web.css.marginRight
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.paddingLeft
+import org.jetbrains.compose.web.css.paddingRight
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
@@ -322,14 +323,13 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
             if (info.source != null) {
                 Div(attrs = {
                     style {
+                        paddingTop(1.5.em)
                         width(100.percent)
                         textAlign("right")
                     }
                 }) {
                     A(info.source.url.href, attrs = {
                         style {
-                            paddingTop(1.5.em)
-                            paddingLeft(1.em)
                             color(Color.black)
                         }
                     }) {
