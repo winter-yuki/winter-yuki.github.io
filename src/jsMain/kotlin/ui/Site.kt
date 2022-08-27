@@ -35,6 +35,7 @@ import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
+import org.jetbrains.compose.web.dom.Br
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Footer
 import org.jetbrains.compose.web.dom.H2
@@ -254,7 +255,9 @@ fun ContentView(info: ContentInfo, content: Content) {
             }
             when (val rendered = render(info.id, content)) {
                 is RenderingResult.Plain -> {
-                    P(attrs = { rendered.run { attrs() } }) {
+                    P(attrs = {
+                        rendered.run { attrs() }
+                    }) {
                         content.v.lines().forEach {
                             Line(it)
                         }
@@ -278,12 +281,6 @@ fun ContentView(info: ContentInfo, content: Content) {
 
 @Composable
 fun Line(line: String) {
-    Div(attrs = {
-        style {
-            fontSize(12.pt)
-            padding(0.9.pt)
-        }
-    }) {
-        Text(line)
-    }
+    Text(line)
+    Br()
 }
