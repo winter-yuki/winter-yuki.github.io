@@ -65,7 +65,7 @@ private val testData = listOf(
     contentInfo {
         title = "Kotlin"
         access = ContentAccess.Common
-        name = "ReadMe"
+        name = "kotlin"
         format = ContentFormat.MD
         location = "https://raw.githubusercontent.com/JetBrains/kotlin/master/ReadMe.md"
         status = ContentUpdateStatus.Continuous
