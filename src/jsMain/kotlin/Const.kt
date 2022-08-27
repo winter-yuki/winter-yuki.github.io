@@ -98,7 +98,7 @@ private val prodData = listOf(
         status = ContentUpdateStatus.Continuous
     },
     contentInfo {
-        title = "Self-types for Kotlin"
+        title = "Self-types design for Kotlin language"
         access = ContentAccess.Common
         name = "kotlin-self-types"
         format = ContentFormat.MD
