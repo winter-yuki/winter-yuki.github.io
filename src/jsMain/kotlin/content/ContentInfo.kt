@@ -1,5 +1,8 @@
 package content
 
+import org.jetbrains.compose.web.css.CSSSizeValue
+import org.jetbrains.compose.web.css.CSSUnit
+
 data class ContentInfo(
     val dir: ContentDir,
     val name: ContentName,
@@ -12,7 +15,7 @@ data class ContentInfo(
     val permanentShortNames: List<String>,
     val shortNames: List<String>,
     val hideTitle: Boolean,
-    val contentWidthMultiplier: Double,
+    val contentWidth: CSSSizeValue<CSSUnit.em>?,
 ) {
     val id = ContentId(dir, name, format)
     val titleNotNull = title?.v ?: id.name.v
@@ -31,7 +34,7 @@ class ContentInfoBuilder {
     val permanentShortNames = mutableListOf<String>() // Do not remove permanent names!
     val shortNames = mutableListOf<String>()
     var hideTitle: Boolean = false
-    var contentWidthMultiplier: Double = 1.0
+    var contentWidth: CSSSizeValue<CSSUnit.em>? = null
 
     fun build() = ContentInfo(
         dir = ContentDir(dir),
@@ -45,7 +48,7 @@ class ContentInfoBuilder {
         permanentShortNames = permanentShortNames,
         shortNames = shortNames,
         hideTitle = hideTitle,
-        contentWidthMultiplier = contentWidthMultiplier,
+        contentWidth = contentWidth
     )
 }
 
