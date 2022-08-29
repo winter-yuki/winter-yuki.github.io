@@ -138,6 +138,12 @@ fun Foot(routing: Routing, contentLoaded: Boolean) {
                         }
                     }
                 }
+            } else {
+                Div(attrs = {
+                    style {
+                        height(if (routing.route.isRoot) 5.em else 2.em)
+                    }
+                }) { }
             }
         }
     }
