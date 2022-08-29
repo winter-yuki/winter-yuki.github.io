@@ -83,7 +83,7 @@ private val testData = listOf(
 
 private val prodData = listOf(
     contentInfo {
-        title = "Материалы по CS"
+        title = "Материалы по computer science"
         access = ContentAccess.Common
         name = "cs-edu-materials"
         format = ContentFormat.MD
