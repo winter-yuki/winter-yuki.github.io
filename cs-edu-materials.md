@@ -1,10 +1,12 @@
-# Материалы по CS
+# Материалы по computer science
 
 ## Общее
 
-### Онлайн курсы
+### Платформы онлайн курсов
 
-- https://stepik.org/ - содержит огромное количество бесплатных курсов по математике и программированию. Самыми качественными курсами там являются курсы от https://compscicenter.ru/[Computer Science Center] -- https://stepik.org/org/compscicenter.
+- https://stepik.org/ - содержит огромное количество бесплатных курсов по математике и программированию.
+  - Например, [курсы](https://stepik.org/org/compscicenter) от [Computer Science Center](https://compscicenter.ru/)
+  - и [курсы](https://stepik.org/org/bioinf?auth=registration) от [института биоинформатики](https://bioinf.me/)
 - https://www.coursera.org/
 - https://www.udacity.com/
 - https://www.edx.org/
@@ -77,6 +79,19 @@
 - Питон для тех кто побольше: https://stepik.org/course/512/syllabus
 - Крутой курс лекций: https://www.youtube.com/watch?v=-py9GXvJk6A&list=PLlb7e2G7aSpQhNphPSpcO4daaRPeVstku
 - Слайды курса маги ITMO JB: https://wiki.compscicenter.ru/index.php/Python_5SE_%D0%BE%D1%81%D0%B5%D0%BD%D1%8C_2021
+
+### Haskell
+
+- Курс для начинающих в двух частях: [раз](https://stepik.org/course/75/syllabus), [два](https://stepik.org/course/693/syllabus)
+- К курсу хорошо читать [Will Kurt "Get Programming with Haskell"](https://www.amazon.com/Get-Programming-Haskell-Will-Kurt/dp/1617293768) - там много более практических примеров для связи с реальностью
+- [Лекции](https://www.youtube.com/playlist?list=PL-_cKNuVAYAVX_q9XOKoFm95234G6YfOj) Дениса Николаевича на МКН: введение в лямбда-исчисление, более углубленно материал со степика и более продвинутые темы
+- [Vitaly Bragilevsky "Haskell in depth"](https://www.amazon.com/Haskell-Depth-Vitaly-Bragilevsky-ebook/dp/B098C6ZFZR) - отличная практическая книжка с погружением почти по всё
+- [Simon Marlow "Parallel and Concurrent Programming in Haskell: Techniques for Multicore and Multithreaded Programming"](https://www.amazon.com/Parallel-Concurrent-Programming-Haskell-Multithreaded/dp/1449335942) - параллельное программирование на Haskell
+
+Полезные ссылки:
+- [Hoogle](https://hoogle.haskell.org/) - типизированный поиск по документации библиотек
+- [Typeclassopedia](https://wiki.haskell.org/Typeclassopedia)
+- [GHC docs](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/index.html) - про компилятор и расширения языка
 
 ### Android
 
