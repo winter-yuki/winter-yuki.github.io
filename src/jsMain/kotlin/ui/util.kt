@@ -4,25 +4,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import content.Content
 import content.ContentInfo
 import content.load
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.web.css.StyleScope
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Div
 
+fun StyleScope.centerHorizontally() {
+    property("margin", "0 auto")
+}
+
 @Composable
-fun Container(widthMultiplier: Double = 1.0, content: @Composable () -> Unit) {
+fun Container(content: @Composable () -> Unit) {
     Div(attrs = {
         style {
-            width((widthMultiplier * 50).em)
-            property("margin", "0 auto")
+            width(50.em)
+            centerHorizontally()
         }
     }) {
         content()
+    }
+}
+
+@Composable
+fun DelayView(timeMillis: Long, block: @Composable () -> Unit) {
+    var wait by remember { mutableStateOf(true) }
+    if (wait) {
+        Delay(timeMillis, onTimeout = { wait = false })
+    } else {
+        block()
     }
 }
 

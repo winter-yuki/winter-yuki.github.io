@@ -5,11 +5,9 @@ import Registry
 import Route
 import Routing
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import content.Content
 import content.ContentFormat
 import content.ContentInfo
@@ -171,10 +169,17 @@ fun Main(routing: Routing, onContentLoadedUpdate: (Boolean) -> Unit) {
 @Composable
 fun ItemsView(routing: Routing, items: Iterable<ContentInfo>) {
     Section {
-        Container(widthMultiplier = 0.8) {
-            items.forEach { item ->
-                key(item) {
-                    Item(item, routing)
+        Container {
+            Div(attrs = {
+                style {
+                    width(40.em)
+                    centerHorizontally()
+                }
+            }) {
+                items.forEach { item ->
+                    key(item) {
+                        Item(item, routing)
+                    }
                 }
             }
         }
@@ -220,13 +225,13 @@ fun Item(info: ContentInfo, routing: Routing) {
 @Composable
 fun NotFound() {
     Section {
-        Container(widthMultiplier = 1.1) {
+        Container {
             P(attrs = {
                 style {
                     textAlign("center")
                     fontSize(40.px)
                     padding(60.px)
-                    attr("margin", "0 auto")
+                    centerHorizontally()
                 }
             }) {
                 Text(Const.NOT_FOUND)
@@ -249,14 +254,12 @@ fun ContentView(info: ContentInfo, onContentLoadedUpdate: (Boolean) -> Unit) {
 fun Loading() {
     Section {
         Container {
-            var wait by remember { mutableStateOf(true) }
-            if (wait) {
-                Delay(2000) { wait = false }
-            } else {
+            DelayView(2000) {
                 P(attrs = {
                     style {
                         padding(60.px)
                         fontSize(25.px)
+                        centerHorizontally()
                     }
                 }) {
                     Text(Const.LOADING)
@@ -285,60 +288,71 @@ fun FailedToLoad() {
 @Composable
 fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boolean) -> Unit) {
     Article {
-        Container(widthMultiplier = info.contentWidthMultiplier) {
-            if (info.hideTitle || info.format != ContentFormat.TXT) {
-                Div(attrs = { style { height(3.em) } }) { }
-            } else {
-                H2(attrs = {
-                    style {
-                        paddingTop(1.5.em)
-                        textAlign("center")
-                        fontSize(17.pt)
-                        fontWeight("normal")
+        Container {
+            Div(attrs = {
+                style {
+                    if (info.contentWidth == null) {
+                        width(100.percent)
+                    } else {
+                        width(info.contentWidth)
                     }
-                }) {
-                    Text(info.titleNotNull)
+                    centerHorizontally()
                 }
-            }
-            when (val rendered = render(info.id, content)) {
-                is RenderingResult.Plain -> {
-                    P(attrs = {
-                        rendered.run { attrs() }
-                    }) {
-                        content.v.lines().forEach {
-                            Line(it)
+            }) {
+                if (info.hideTitle || info.format != ContentFormat.TXT) {
+                    Div(attrs = { style { height(3.em) } }) { }
+                } else {
+                    H2(attrs = {
+                        style {
+                            paddingTop(1.5.em)
+                            textAlign("center")
+                            fontSize(17.pt)
+                            fontWeight("normal")
                         }
+                    }) {
+                        Text(info.titleNotNull)
                     }
                 }
-                is RenderingResult.Rendered -> {
-                    P(attrs = {
-                        rendered.run { attrs() }
-                        ref {
-                            it.innerHTML = rendered.html
-                            js("hljs.highlightAll();")
-                            onContentLoadedUpdate(true)
-                            onDispose {
-                                it.innerHTML = ""
-                                onContentLoadedUpdate(false)
+                when (val rendered = render(info.id, content)) {
+                    is RenderingResult.Plain -> {
+                        P(attrs = {
+                            rendered.run { attrs() }
+                        }) {
+                            content.v.lines().forEach {
+                                Line(it)
                             }
                         }
-                    }) { }
-                }
-            }
-            if (info.source != null) {
-                Div(attrs = {
-                    style {
-                        paddingTop(1.em)
-                        width(100.percent)
-                        textAlign("right")
                     }
-                }) {
-                    A(info.source.url.href, attrs = {
+                    is RenderingResult.Rendered -> {
+                        P(attrs = {
+                            rendered.run { attrs() }
+                            ref {
+                                it.innerHTML = rendered.html
+                                js("hljs.highlightAll();")
+                                onContentLoadedUpdate(true)
+                                onDispose {
+                                    it.innerHTML = ""
+                                    onContentLoadedUpdate(false)
+                                }
+                            }
+                        }) { }
+                    }
+                }
+                if (info.source != null) {
+                    Div(attrs = {
                         style {
-                            color(Color.black)
+                            paddingTop(1.em)
+                            width(100.percent)
+                            textAlign("right")
                         }
                     }) {
-                        Text(Const.SOURCE)
+                        A(info.source.url.href, attrs = {
+                            style {
+                                color(Color.black)
+                            }
+                        }) {
+                            Text(Const.SOURCE)
+                        }
                     }
                 }
             }
