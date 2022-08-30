@@ -68,7 +68,31 @@ private val testData = listOf(
     contentInfo {
         title = "Failed to load data"
         access = ContentAccess.Common
-        name = "eesdfyguhijklkjb"
+        name = "sxdcfvgbh"
+        format = ContentFormat.TXT
+    },
+    contentInfo {
+        title = "Failed to load data"
+        access = ContentAccess.Common
+        name = "gfcvcjhsbckjaf"
+        format = ContentFormat.TXT
+    },
+    contentInfo {
+        title = "Failed to load data"
+        access = ContentAccess.Common
+        name = "kqkqkq"
+        format = ContentFormat.TXT
+    },
+    contentInfo {
+        title = "Failed to load data"
+        access = ContentAccess.Common
+        name = "gfcvcjhsbckjaf"
+        format = ContentFormat.TXT
+    },
+    contentInfo {
+        title = "Failed to load data"
+        access = ContentAccess.Common
+        name = "kqkqkq1"
         format = ContentFormat.TXT
     },
     contentInfo {
