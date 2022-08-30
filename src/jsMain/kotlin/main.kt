@@ -1,11 +1,3 @@
-import org.jetbrains.compose.web.css.Style
-import org.jetbrains.compose.web.renderComposable
-import ui.Site
-import ui.SiteStylesheet
+import ui.RenderSite
 
-fun main() {
-    renderComposable(rootElementId = "root") {
-        Style(SiteStylesheet)
-        Site()
-    }
-}
+fun main() = RenderSite()

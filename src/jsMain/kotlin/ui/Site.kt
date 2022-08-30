@@ -5,14 +5,17 @@ import Registry
 import Route
 import Routing
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import content.Content
 import content.ContentFormat
 import content.ContentInfo
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.css.StyleScope
 import org.jetbrains.compose.web.css.backgroundColor
 import org.jetbrains.compose.web.css.backgroundImage
@@ -26,12 +29,14 @@ import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.marginLeft
 import org.jetbrains.compose.web.css.marginRight
 import org.jetbrains.compose.web.css.padding
+import org.jetbrains.compose.web.css.paddingLeft
 import org.jetbrains.compose.web.css.paddingTop
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.pt
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.textAlign
 import org.jetbrains.compose.web.css.textDecoration
+import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Article
@@ -46,23 +51,35 @@ import org.jetbrains.compose.web.dom.Section
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
+import org.jetbrains.compose.web.renderComposable
+
+fun RenderSite() {
+    renderComposable(rootElementId = "root") {
+        Style(SiteStylesheet)
+        Site()
+    }
+}
+
+class ContentState {
+    var contentLoaded: Boolean by mutableStateOf(false)
+}
 
 @Composable
 fun Site() {
     val routing = remember { Routing() }
-    val (contentLoaded, onContentLoadedUpdate) = remember { mutableStateOf(false) }
-    Head(routing)
-    Main(routing, onContentLoadedUpdate)
-    Foot(routing, contentLoaded)
+    val contentState = remember { ContentState() }
+    SiteHeader(routing)
+    SiteBody(routing, contentState)
+    SiteFooter(routing, contentState.contentLoaded)
 }
 
 @Composable
-fun Head(routing: Routing) {
+fun SiteHeader(routing: Routing) {
     Header(attrs = {
         style {
-            backgroundImage("linear-gradient(#FB77FF, white)")
+            backgroundImage("linear-gradient(${SiteStylesheet.primaryColor}, white)")
             if (routing.route.isRoot) {
-                height(15.em)
+                height(28.vh)
             } else {
                 height(7.em)
             }
@@ -72,7 +89,8 @@ fun Head(routing: Routing) {
             A(routing.url(null), attrs = {
                 style {
                     if (routing.route.isRoot) {
-                        paddingTop(0.7.em)
+                        paddingTop(0.8.em)
+                        paddingLeft(0.4.em)
                         fontSize(5.em)
                     } else {
                         paddingTop(0.3.em)
@@ -95,7 +113,7 @@ fun Head(routing: Routing) {
 }
 
 @Composable
-fun Foot(routing: Routing, contentLoaded: Boolean) {
+fun SiteFooter(routing: Routing, contentLoaded: Boolean) {
     Footer(attrs = {
         style {
             textAlign("center")
@@ -106,7 +124,7 @@ fun Foot(routing: Routing, contentLoaded: Boolean) {
             if (Const.SHOW_FOOTER_CONTENT && ready) {
                 Ul(attrs = {
                     style {
-                        padding(3.em)
+                        padding(3.5.em)
                         display(DisplayStyle.InlineBlock)
                     }
                 }) {
@@ -117,21 +135,19 @@ fun Foot(routing: Routing, contentLoaded: Boolean) {
                     Li(attrs = {
                         style {
                             li()
-                            marginRight(2.em)
+                            marginRight(1.em)
                         }
                     }) {
-                        Text(Const.EMAIL)
+                        A("mailto:" + Const.EMAIL) {
+                            Text("email")
+                        }
                     }
                     Li(attrs = {
                         style {
                             li()
                         }
                     }) {
-                        A(Const.GITHUB, attrs = {
-                            style {
-                                color(Color.black)
-                            }
-                        }) {
+                        A(Const.GITHUB) {
                             Text("github")
                         }
                     }
@@ -148,7 +164,7 @@ fun Foot(routing: Routing, contentLoaded: Boolean) {
 }
 
 @Composable
-fun Main(routing: Routing, onContentLoadedUpdate: (Boolean) -> Unit) {
+fun SiteBody(routing: Routing, contentState: ContentState) {
     when (val route = routing.route) {
         is Route.Root -> {
             val items = remember {
@@ -161,7 +177,7 @@ fun Main(routing: Routing, onContentLoadedUpdate: (Boolean) -> Unit) {
             val info = remember {
                 Registry.content.getValue(route.id)
             }
-            ContentView(info, onContentLoadedUpdate)
+            ContentView(info, contentState)
         }
     }
 }
@@ -172,8 +188,8 @@ fun ItemsView(routing: Routing, items: Iterable<ContentInfo>) {
         Container {
             Div(attrs = {
                 style {
-                    width(40.em)
-                    centerHorizontally()
+                    width(35.em)
+                    center()
                 }
             }) {
                 items.forEach { item ->
@@ -204,7 +220,6 @@ fun Item(info: ContentInfo, routing: Routing) {
                 fontSize(2.em)
                 display(DisplayStyle.Block)
                 textDecoration("none")
-                color(Color.black)
                 fontWeight("330")
             }
             onClick { routing.onNavigate(info.id) }
@@ -231,7 +246,7 @@ fun NotFound() {
                     textAlign("center")
                     fontSize(40.px)
                     padding(60.px)
-                    centerHorizontally()
+                    center()
                 }
             }) {
                 Text(Const.NOT_FOUND)
@@ -241,12 +256,12 @@ fun NotFound() {
 }
 
 @Composable
-fun ContentView(info: ContentInfo, onContentLoadedUpdate: (Boolean) -> Unit) {
+fun ContentView(info: ContentInfo, contentState: ContentState) {
     val state = loadContent(info)
     when (val result = state.value) {
         is LoadResult.Loading -> Loading()
         is LoadResult.Fail -> FailedToLoad()
-        is LoadResult.Success -> ContentView(info, result.content, onContentLoadedUpdate)
+        is LoadResult.Success -> ContentView(info, result.content, contentState)
     }
 }
 
@@ -259,7 +274,7 @@ fun Loading() {
                     style {
                         padding(60.px)
                         fontSize(25.px)
-                        centerHorizontally()
+                        center()
                     }
                 }) {
                     Text(Const.LOADING)
@@ -286,7 +301,7 @@ fun FailedToLoad() {
 }
 
 @Composable
-fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boolean) -> Unit) {
+fun ContentView(info: ContentInfo, content: Content, contentState: ContentState) {
     Article {
         Container {
             Div(attrs = {
@@ -296,7 +311,6 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
                     } else {
                         width(info.contentWidth)
                     }
-                    centerHorizontally()
                 }
             }) {
                 if (info.hideTitle || info.format != ContentFormat.TXT) {
@@ -329,10 +343,10 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
                             ref {
                                 it.innerHTML = rendered.html
                                 js("hljs.highlightAll();")
-                                onContentLoadedUpdate(true)
+                                contentState.contentLoaded = true
                                 onDispose {
                                     it.innerHTML = ""
-                                    onContentLoadedUpdate(false)
+                                    contentState.contentLoaded = false
                                 }
                             }
                         }) { }
@@ -346,11 +360,7 @@ fun ContentView(info: ContentInfo, content: Content, onContentLoadedUpdate: (Boo
                             textAlign("right")
                         }
                     }) {
-                        A(info.source.url.href, attrs = {
-                            style {
-                                color(Color.black)
-                            }
-                        }) {
+                        A(info.source.url.href) {
                             Text(Const.SOURCE)
                         }
                     }
