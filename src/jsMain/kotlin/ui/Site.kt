@@ -311,6 +311,7 @@ fun ContentView(info: ContentInfo, content: Content, contentState: ContentState)
                     } else {
                         width(info.contentWidth)
                     }
+                    center()
                 }
             }) {
                 if (info.hideTitle || info.format != ContentFormat.TXT) {
