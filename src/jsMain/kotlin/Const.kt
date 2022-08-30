@@ -63,6 +63,7 @@ private val testData = listOf(
         format = ContentFormat.TXT
         permanentShortNames.add("short")
         status = ContentUpdateStatus.Draft
+        accessPromoter = true
     },
     contentInfo {
         title = "Failed to load data"

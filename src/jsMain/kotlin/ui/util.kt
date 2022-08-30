@@ -18,7 +18,7 @@ import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Div
 
-fun StyleScope.centerHorizontally() {
+fun StyleScope.center() {
     property("margin", "0 auto")
 }
 
@@ -27,7 +27,7 @@ fun Container(content: @Composable () -> Unit) {
     Div(attrs = {
         style {
             width(50.em)
-            centerHorizontally()
+            center()
         }
     }) {
         content()

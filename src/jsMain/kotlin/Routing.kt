@@ -43,15 +43,9 @@ class Routing {
         val newRoute = id.toRoute().also {
             console.log("onNavigate: route: $it")
         }
+        promoteAccess()
         if (route != newRoute) {
-            route = newRoute
-            window.history.pushState(
-                data = Unit,
-                title = Const.TITLE,
-                url = "${window.location.origin}/${url(id)}".also {
-                    console.log("onNavigate: url: $it")
-                }
-            )
+            updateHistory(newRoute, id)
         }
     }
 
@@ -86,6 +80,27 @@ class Routing {
                 return Route.Content(afterSubstitution)
             }
         }
+    }
+
+    private fun promoteAccess() {
+        val oldRoute = route
+        if (oldRoute is Route.Content) {
+            val info = Registry.content.getValue(oldRoute.id)
+            if (info.accessPromoter && access < info.access) {
+                access = info.access
+            }
+        }
+    }
+
+    private fun updateHistory(newRoute: Route, id: ContentId?) {
+        route = newRoute
+        window.history.pushState(
+            data = Unit,
+            title = Const.TITLE,
+            url = "${window.location.origin}/${url(id)}".also {
+                console.log("onNavigate: url: $it")
+            }
+        )
     }
 
     companion object {
