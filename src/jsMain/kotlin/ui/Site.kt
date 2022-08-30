@@ -53,7 +53,7 @@ import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
 import org.jetbrains.compose.web.renderComposable
 
-fun RenderSite() {
+fun renderSite() {
     renderComposable(rootElementId = "root") {
         Style(SiteStylesheet)
         Site()
