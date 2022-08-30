@@ -21,7 +21,7 @@ data class ContentId(
 
     companion object {
         // Example: dir1/dir2/name|day.month.year|.txt
-        private val regex = """(?:([\w\s/]+)/)?([\w\s\-]+)?\.(\w+)""".toRegex()
+        private val regex = """(?:([\w\s/]+)/)?([\w\s\-а-яА-Я]+)?\.(\w+)""".toRegex()
         //                     dir             name       ext
 
         fun fromPath(path: String): ContentId? {

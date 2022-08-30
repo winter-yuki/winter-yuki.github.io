@@ -58,7 +58,7 @@ class Routing {
         val hash = window.location.hash.log { "hash = $it" }
         if (hash.isEmpty()) return Route.Root
         if (!hash.startsWith(PREFIX)) return Route.Unknown.log { "wrong prefix" }
-        val accessOrPath = hash.drop(PREFIX.length)
+        val accessOrPath = hash.drop(PREFIX.length).decode().log { "decoded = $it" }
         if (accessOrPath.isEmpty()) return Route.Root
         when {
             accessOrPath.startsWith("!") -> {
@@ -102,6 +102,8 @@ class Routing {
             }
         )
     }
+
+    private fun String.decode() = js("decodeURIComponent")(this) as String
 
     companion object {
         private const val PREFIX = "#/"
