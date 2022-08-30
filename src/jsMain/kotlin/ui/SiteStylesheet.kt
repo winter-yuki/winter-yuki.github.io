@@ -6,7 +6,7 @@ import org.jetbrains.compose.web.css.color
 import org.jetbrains.compose.web.css.fontFamily
 
 object SiteStylesheet : StyleSheet() {
-    const val primaryColor = "#FB77FF"
+    val primaryColor = Color("#FB77FF")
 
     init {
         "a" style {
