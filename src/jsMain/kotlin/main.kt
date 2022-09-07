@@ -1,3 +1,3 @@
-import ui.RenderSite
+import ui.renderSite
 
-fun main() = RenderSite()
+fun main() = renderSite()

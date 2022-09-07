@@ -53,7 +53,7 @@ import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
 import org.jetbrains.compose.web.renderComposable
 
-fun RenderSite() {
+fun renderSite() {
     renderComposable(rootElementId = "root") {
         Style(SiteStylesheet)
         Site()
@@ -311,6 +311,7 @@ fun ContentView(info: ContentInfo, content: Content, contentState: ContentState)
                     } else {
                         width(info.contentWidth)
                     }
+                    center()
                 }
             }) {
                 if (info.hideTitle || info.format != ContentFormat.TXT) {
