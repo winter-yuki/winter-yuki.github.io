@@ -10,7 +10,7 @@
 - https://www.coursera.org/
 - https://www.udacity.com/
 - https://www.edx.org/
-- [https://www.jetbrains.com/ru-ru/academy/](JB Academy) - обучение в проектном формате: даётся проект и материал, который необходим, чтобы пошагово его реализовать.
+- [JB Academy](https://www.jetbrains.com/ru-ru/academy/) - обучение в проектном формате: даётся проект и материал, который необходим, чтобы пошагово его реализовать.
 
 ### Блоги
 
