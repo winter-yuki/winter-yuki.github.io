@@ -120,7 +120,6 @@ private val prodData = listOf(
         name = "soft-materials"
         format = ContentFormat.MD
         status = ContentUpdateStatus.Continuous
-        accessPromoter = true
     },
     contentInfo {
         title = "Конспект по soft skills"
