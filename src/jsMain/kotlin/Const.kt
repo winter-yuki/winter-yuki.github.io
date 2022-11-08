@@ -138,4 +138,12 @@ private val prodData = listOf(
         status = ContentUpdateStatus.Draft
         source = "https://github.com/winter-yuki/kotlin-self-types"
     },
+    contentInfo {
+        title = "Memo concept"
+        access = ContentAccess.Extended
+        name = "memo-concept"
+        format = ContentFormat.MD
+        status = ContentUpdateStatus.Draft
+        accessPromoter = true
+    },
 ).asReversed()
