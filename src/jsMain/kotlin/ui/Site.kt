@@ -172,6 +172,7 @@ fun SiteBody(routing: Routing, contentState: ContentState) {
             }
             ItemsView(routing, items)
         }
+
         is Route.Unknown -> NotFound()
         is Route.Content -> {
             val info = remember {
@@ -331,6 +332,12 @@ fun ContentView(info: ContentInfo, content: Content, contentState: ContentState)
                 when (val rendered = render(info.id, content)) {
                     is RenderingResult.Plain -> {
                         P(attrs = {
+                            if (info.centerPlain) {
+                                style {
+                                    widthContent()
+                                    center()
+                                }
+                            }
                             rendered.run { attrs() }
                         }) {
                             content.v.lines().forEach {
@@ -338,6 +345,7 @@ fun ContentView(info: ContentInfo, content: Content, contentState: ContentState)
                             }
                         }
                     }
+
                     is RenderingResult.Rendered -> {
                         P(attrs = {
                             rendered.run { attrs() }

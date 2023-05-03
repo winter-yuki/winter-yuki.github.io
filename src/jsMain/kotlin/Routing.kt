@@ -71,6 +71,7 @@ class Routing {
                 access = ContentAccess.ofRepr(accessRepr) ?: return Route.Unknown.log { "wrong repr" }
                 return Route.Root
             }
+
             else -> {
                 val path = accessOrPath
                 val id = ContentId.fromPath(path).log { "id = $it" }

@@ -28,9 +28,11 @@ fun render(id: ContentId, content: Content): RenderingResult =
                 padding(0.9.pt)
             }
         }
+
         ContentFormat.MD -> {
             val parse = js("marked.parse") as (String) -> String
             RenderingResult.Rendered(parse(content.v)) { classes("markdown-body") }
         }
+
         ContentFormat.ADOC -> RenderingResult.Plain()
     }

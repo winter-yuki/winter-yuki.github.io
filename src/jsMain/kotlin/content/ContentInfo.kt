@@ -16,6 +16,7 @@ data class ContentInfo(
     val shortNames: List<String>,
     val hideTitle: Boolean,
     val contentWidth: CSSSizeValue<CSSUnit.em>?,
+    val centerPlain: Boolean,
     val accessPromoter: Boolean,
 ) {
     val id = ContentId(dir, name, format)
@@ -36,6 +37,7 @@ class ContentInfoBuilder {
     val shortNames = mutableListOf<String>()
     var hideTitle: Boolean = false
     var contentWidth: CSSSizeValue<CSSUnit.em>? = null
+    var centerPlain = true
     var accessPromoter: Boolean = false
 
     fun build() = ContentInfo(
@@ -51,6 +53,7 @@ class ContentInfoBuilder {
         shortNames = shortNames,
         hideTitle = hideTitle,
         contentWidth = contentWidth,
+        centerPlain = centerPlain,
         accessPromoter = accessPromoter
     )
 }

@@ -22,6 +22,10 @@ fun StyleScope.center() {
     property("margin", "0 auto")
 }
 
+fun StyleScope.widthContent() {
+    property("width", "max-content")
+}
+
 @Composable
 fun Container(content: @Composable () -> Unit) {
     Div(attrs = {
