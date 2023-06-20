@@ -93,6 +93,9 @@
 - [Typeclassopedia](https://wiki.haskell.org/Typeclassopedia)
 - [GHC docs](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/index.html) - про компилятор и расширения языка
 
+Посты:
+- https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
+
 ### Android
 
 - Cool Udacity course by Google: https://classroom.udacity.com/courses/ud9012
